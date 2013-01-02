@@ -26,9 +26,11 @@ class MessageCreateView(FormView):
         message = form.cleaned_data.get('message')
         chatroom = form.cleaned_data.get('chatroom')
         name = form.cleaned_data.get('name')
+        print chatroom, message, name
         p = pusher.pusher_from_url()
-        p[chatroom].trigger('my_event', {'id': '1', 'name': name, 'message': message})
-        return http.HttpResponse('Ok')
+        if p[chatroom].trigger('new-message', {'id': '1', 'name': name, 'message': message}):
+            return http.HttpResponse('Ok')
+        return self.form_invalid(form=form)
 
     def form_invalid(self, form):
         return http.HttpResponse('Error')

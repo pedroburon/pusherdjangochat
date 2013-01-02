@@ -1,0 +1,10 @@
+Django==1.4.3
+argparse==1.2.1
+distribute==0.6.24
+dj-database-url==0.2.1
+gevent==0.13.8
+greenlet==0.4.0
+gunicorn==0.17.0
+psycopg2==2.4.6
+-e git://github.com/pusher/pusher_client_python.git@7ca4f05fb4221515c9952665d4ad803ec76f8179#egg=pusher-dev
+wsgiref==0.1.2

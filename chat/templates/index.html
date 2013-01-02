@@ -25,29 +25,40 @@
       WEB_SOCKET_DEBUG = true;
 
       var pusher = new Pusher('5fd372aabe4942fe9175');
-      var channel = pusher.subscribe('chat');
-      channel.bind('my_event', function(data) {
-          $('#messages').append('<dt id="message-dt-"' + data['id'] + '>' + data['name'] + '</dt>')
-          $('#messages').append('<dd id="message-dd-"' + data['id'] + '>' + data['message'] + '</dt>')
-      });
+      var channel = null;
     </script>
     <script type="text/javascript">
+      var append_message = function(data) {
+        $('#messages').append('<dt id="message-dt-"' + data['id'] + '>' + data['name'] + '</dt>')
+                      .append('<dd id="message-dd-"' + data['id'] + '>' + data['message'] + '</dt>')
+      }
+      function subscribe_to_chatroom(name) {
+        if (channel != null)
+          pusher.unsubscribe(channel.name)
+        channel = pusher.subscribe($('#id_chatroom').val())
+        channel.bind('new-message', append_message)
+      }
       jQuery(function($) {
-          var name = '';
-          while (name == '' || name == null) {
-            name = window.prompt("Ingresa tu nombre", null);
-            if (name != null)
-               name = name.trim()
-          }
-          $('#id_name').val(name)
-      })
-      $('#chat-form').submit(function(e) {
-        e.preventDefault();
-        var $this = $(this)
-          , action = $this.attr('action')
-          , data = $this.serialize();
-  
-        $.post(action, data, function(json) {
+        var name = '';
+        while (name == '' || name == null) {
+          name = window.prompt("Ingresa tu nombre", null);
+          if (name != null)
+             name = name.trim()
+        }
+        $('#id_name').val(name)
+        subscribe_to_chatroom()
+        $('#id_chatroom').change(function(e) {
+          subscribe_to_chatroom($(this).val())
+          $('#messages').html('')
+        })
+        $('#chat-form').submit(function(e) {
+          e.preventDefault();
+          var $this = $(this)
+            , action = $this.attr('action')
+            , data = $this.serialize();
+    
+          $.post(action, data, function(json) {
+          })
         })
       })
     </script>
