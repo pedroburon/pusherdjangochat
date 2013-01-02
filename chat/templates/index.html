@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Pusher Test</title>
+    <title>Pusher Django</title>
   </head>
   <body>
-
+    <h1>Pusher Django</h1>
+    <p>Django chat using pusher, open another tab (or window) and chat with yourself.</p>
     <form method="post" id="chat-form">{% csrf_token %}
       {{ form.as_p }}
       <input type="submit" />
@@ -41,7 +42,7 @@
       jQuery(function($) {
         var name = '';
         while (name == '' || name == null) {
-          name = window.prompt("Ingresa tu nombre", null);
+          name = window.prompt("Your name", null);
           if (name != null)
              name = name.trim()
         }

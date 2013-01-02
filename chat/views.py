@@ -6,11 +6,11 @@ import pusher
 
 
 class MessageForm(forms.Form):
-    TEEN, COLLEGE, MATURE = map(str, range(3))
+    RED, BLUE, YELLOW = map(str, range(3))
     CHATROOMS = (
-        (TEEN, 'Jovenzuelos'),
-        (COLLEGE, 'Universtarios'),
-        (MATURE, 'Adultos')
+        (RED, 'Red'),
+        (BLUE, 'Blue'),
+        (YELLOW, 'Yellow')
     )
     name = forms.CharField(widget=forms.HiddenInput)
     message = forms.CharField()
@@ -26,7 +26,6 @@ class MessageCreateView(FormView):
         message = form.cleaned_data.get('message')
         chatroom = form.cleaned_data.get('chatroom')
         name = form.cleaned_data.get('name')
-        print chatroom, message, name
         p = pusher.pusher_from_url()
         if p[chatroom].trigger('new-message', {'id': '1', 'name': name, 'message': message}):
             return http.HttpResponse('Ok')
@@ -37,5 +36,5 @@ class MessageCreateView(FormView):
 
     def get_initial(self):
         return {
-            'name': 'anonimo'
+            'name': 'Anonym'
         }
