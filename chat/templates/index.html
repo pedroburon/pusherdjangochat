@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Pusher Test</title>
+  </head>
+  <body>
+
+    <form method="post" id="chat-form">{% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" />
+    </form>
+
+    <dl id="messages">
+    </dl>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js" type="text/javascript"></script>
+    <script src="http://js.pusher.com/1.12/pusher.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      // Enable pusher logging - don't include this in production
+      Pusher.log = function(message) {
+        if (window.console && window.console.log) window.console.log(message);
+      };
+
+      // Flash fallback logging - don't include this in production
+      WEB_SOCKET_DEBUG = true;
+
+      var pusher = new Pusher('5fd372aabe4942fe9175');
+      var channel = pusher.subscribe('chat');
+      channel.bind('my_event', function(data) {
+          $('#messages').append('<dt id="message-dt-"' + data['id'] + '>' + data['name'] + '</dt>')
+          $('#messages').append('<dd id="message-dd-"' + data['id'] + '>' + data['message'] + '</dt>')
+      });
+    </script>
+    <script type="text/javascript">
+      jQuery(function($) {
+          var name = '';
+          while (name == '' || name == null) {
+            name = window.prompt("Ingresa tu nombre", null);
+            if (name != null)
+               name = name.trim()
+          }
+          $('#id_name').val(name)
+      })
+      $('#chat-form').submit(function(e) {
+        e.preventDefault();
+        var $this = $(this)
+          , action = $this.attr('action')
+          , data = $this.serialize();
+  
+        $.post(action, data, function(json) {
+        })
+      })
+    </script>
+  </body>
+</html>
