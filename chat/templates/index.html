@@ -29,7 +29,7 @@
     </script>
     <script type="text/javascript">
       var append_message = function(data) {
-        $('#messages').append('<dt id="message-dt-"' + data['id'] + '>' + data['name'] + '</dt>')
+        $('#messages').append('<dt id="message-dt-"' + data['id'] + '>' + data['name'] + ':</dt>')
                       .append('<dd id="message-dd-"' + data['id'] + '>' + data['message'] + '</dt>')
       }
       function subscribe_to_chatroom(name) {
@@ -57,7 +57,10 @@
             , action = $this.attr('action')
             , data = $this.serialize();
     
-          $.post(action, data, function(json) {
+          $.post(action, data, function(response) {
+            if (response == 'Ok') {
+              $('#id_message').val('')
+            }
           })
         })
       })
